@@ -1,28 +1,57 @@
 package com.example.mad_practical_9_21012011069
 
+import android.content.Intent
 import android.graphics.drawable.AnimationDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.WindowManager
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
 
-class Splash_Activity : AppCompatActivity() {
-    lateinit var logonanimation:AnimationDrawable
+class SplashActivity : AppCompatActivity(),Animation.AnimationListener {
+
+    lateinit var AnimationLogo : AnimationDrawable
+    lateinit var logoImage : ImageView
+    lateinit var logoAnimation : Animation
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-        val image:ImageView=findViewById(R.id.uvpce_logo)
-        image.setBackgroundResource(R.drawable.uvpce_animation_list)
-        logonanimation=image.background as AnimationDrawable
+
+        logoImage = findViewById(R.id.uvpce_logo)
+        logoImage.setBackgroundResource(R.drawable.uvpce_animation_list)
+        AnimationLogo = logoImage.background as AnimationDrawable
+
+
+        logoAnimation = AnimationUtils.loadAnimation(this , R.anim.twin_animation)
+        logoAnimation.setAnimationListener(this)
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
-        super.onWindowFocusChanged(hasFocus)
-        if(hasFocus){
-            logonanimation.start()
-    }
-        else{
-            logonanimation.stop()
+        if (hasFocus){
+            logoImage.startAnimation(logoAnimation)
+            AnimationLogo.start()
+
         }
+        else{
+            AnimationLogo.stop()
+        }
+        super.onWindowFocusChanged(hasFocus)
     }
+
+    override fun onAnimationStart(p0: Animation?) {
+        //animationAnd maintent no use kari bija ma redirect karvanu che
+    }
+
+    override fun onAnimationEnd(p0: Animation?) {
+
+        Intent(this,MainActivity::class.java).apply { startActivity(this) }
+    }
+
+    override fun onAnimationRepeat(p0: Animation?) {
+
+    }
+
 }
+
